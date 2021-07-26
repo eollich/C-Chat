@@ -18,7 +18,9 @@ void *get_in_addr(struct sockaddr *sa){
 
 //handle errors
 //TODO
-int check(int exp, const char *msg){}
+int check(int exp, const char *msg){
+  return 0;
+}
 
 /*----------SERVER FUNCTIONS----------*/
 
@@ -95,7 +97,8 @@ int accept_new_connection(int server_socket){
 }
 
 //handle connection
-void *handle_connection(int client_socket){
+//void *handle_connection(int client_socket){
+void handle_connection(int client_socket){
   char *msg = "Hello from the server!";
 
   if( send(client_socket, msg, strlen(msg), 0) == -1){
