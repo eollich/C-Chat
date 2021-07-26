@@ -99,6 +99,17 @@ int accept_new_connection(int server_socket){
 //handle connection
 //void *handle_connection(int client_socket){
 void handle_connection(int client_socket){
+  printf("handling?");//removeme
+  char buffer[100];
+
+  //if( recv(client_socket, buffer, sizeof(buffer), 0) ==-1){
+  //  perror("Error getting client username.");
+  //  exit(EXIT_FAILURE);
+  //}
+  read(client_socket, buffer, sizeof(buffer));
+  printf("Username: %s joined!\n", buffer);
+
+
   char *msg = "Hello from the server!";
 
   if( send(client_socket, msg, strlen(msg), 0) == -1){
