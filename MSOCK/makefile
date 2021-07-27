@@ -1,6 +1,6 @@
 CC=clang
 
-all: msock
+all: msock msock_server msock_client
 
-msock: SRC/msock.c
+%: SRC/%.c
 	$(CC) -c $^ -o $@.o

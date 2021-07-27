@@ -2,7 +2,7 @@ require 'socket'
 
 s = TCPSocket.new 'localhost', 9898
 
-s.write("test");
+s.write("eollich");
 
 
 s.each_line do |line|

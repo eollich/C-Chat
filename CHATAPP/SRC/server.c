@@ -1,11 +1,12 @@
-#include <msock.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include <msock_server.h>
 #include <sys/select.h>
 
 int main(int argc, char **argv){
   const char *port_number = "9898";
   const int backlog = 10;
+
+  int user_count=0;
+  char **usernames;
 
   int server_socket = setup_server(port_number, backlog);
 
@@ -36,11 +37,40 @@ int main(int argc, char **argv){
         }else{
           //the socket is already in the set
           //do whatever with the connection
-          handle_connection(i);
+          //
+          char * username = handle_connection(i);
+
+          user_count++;
+
+          if(user_count == 1){
+            usernames = malloc(sizeof(char*));
+          }
+          else{
+            usernames = realloc(usernames, sizeof(char*) * user_count);
+          }
+
+          *(usernames+user_count-1) = username;
+
+
+          for(int i=0; i<user_count; i++){
+            printf("User: %d: %s\n", i+1, *(usernames+i));
+          }
+
+
           FD_CLR(i, &current_sockets);
         }
       }
     }
+
+    
+    
+   
+  
+ 
+    
+    
+    
+    
 
     ////wait for and eventually accept an incoming connection
     //int client_socket = accept_new_connection(server_socket);
@@ -48,5 +78,20 @@ int main(int argc, char **argv){
     ////do whatever we do with the connections.
     //handle_connection(client_socket);
   }
+
+
+  //look if i need to free when I get wifi
+  //(free the fd_sets)
+  for(int i=0; i<FD_SETSIZE; i++){
+    FD_CLR(i, &current_sockets);
+  }
+
+
+  for(int i=0; i<user_count; i++){
+    free(*(usernames+i));
+  }
+  free(usernames);
+
+
   return 0;
 }
